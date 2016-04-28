@@ -1,2 +1,2 @@
 # snake-and-ladder
-Sanke and Ladder Game Using HTML, CSS, Javascript and Jquery
+Snake and Ladder Game Using HTML, CSS, Javascript and Jquery
