@@ -1,0 +1,104 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style type="text/css">
+  .block{
+    height: 50px;
+    width: 50px;
+    border: 1px #000 solid;
+    text-align: center;
+    align-items: center;
+    margin: 0px auto;
+    display: inline-block;
+    justify-content: center;
+  }
+  .game-cont{
+    align-items:center;
+    justify-content:center;
+    display: inline-block;
+    height: 550px;
+  }
+  .game-cont div{
+    background-repeat: no-repeat;
+    background-position: bottom; 
+  }
+  .blk-left{
+    float: left;
+  }
+  .blk-right{
+    float: right;
+  }
+  .curr-pos{
+    background-color: #FF0000;
+  }
+  .dice{
+    padding: 10px;
+    margin-left: 250px;
+  }
+  .outcome{
+    margin-left: 200px;
+  }
+  </style>
+  <script   src="https://code.jquery.com/jquery-2.2.2.min.js"   integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="   crossorigin="anonymous"></script>
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style=" font-family: arial;background-color: #FAFAFA;">
+  <div class="game-cont">
+  <script type="text/javascript">
+  /* position of snakes and ladders */
+  var snakesLadders = [4,25,46,51,61,69,83,99];
+  
+  /* increment decrement values for ladders and snakes resectively */
+  var incDec = [19,2,82,10,98,15,95,48];
+  var algn_class;
+  var currentPos = 0;
+  for (var i = 100; i >= 1; i--) {
+    
+    algn_class = ((parseInt(i/10)%2)==0 && (parseInt(i)%10)!=0)?"blk-right":"blk-left";
+    algn_class = ((parseInt(i/10)%2)!=0 && (parseInt(i)%10)==0)?"blk-right":algn_class;
+
+    $('.game-cont').append('<div id="col_'+i+'" class="block '+algn_class+'">'+i+'</div>');
+    var pos = jQuery.inArray(i, snakesLadders);
+    console.log(pos);
+    if(pos>=0 && ((pos%2)==0)){
+      $('#col_'+i).css('background-image', 'url("ladder.png")');
+    }
+    else if (pos>=0 && ((pos%2)!=0)) {
+      $('#col_'+i).css('background-image', 'url("snake.png")');
+    }
+
+    if ((i%10)==1) {
+      $('.game-cont').append('<br/>');
+    };
+  };
+  function rollDice(){
+    result = Math.floor(Math.random() * 6) + 1;
+    currentPos += result;
+    $('#last_pos').html(currentPos);
+    if(jQuery.inArray(currentPos, snakesLadders) !== -1){
+      index = jQuery.inArray(currentPos, snakesLadders);
+      currentPos = incDec[index];
+    }
+    if (currentPos>99) {
+      alert('You Win!');
+    };
+    $('#dice_result').html(result);
+    $( ".game-cont div").removeClass('curr-pos');
+    $( "#col_"+currentPos).addClass('curr-pos');
+  }
+  </script>
+  </div>
+  <br/>
+  <div class="outcome">
+    <div>
+      Outcome Of Dice: <span id="dice_result"></span>
+    </div>
+    <div>
+      Last Position After Rolling Dice: <span id="last_pos"></span>
+    </div>
+  </div>
+  <br/>
+  <div>
+    <button onclick="rollDice()" class="dice">Roll Dice</button>
+  </div>
+</body>
+</html>
